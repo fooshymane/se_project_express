@@ -2,11 +2,8 @@ const mongoose = require("mongoose");
 
 const validator = require("validator");
 
-
 const clothingItemSchema = new mongoose.Schema({
-
-
-name: {
+  name: {
     type: String,
     required: true,
     minlength: 2,
@@ -43,6 +40,5 @@ name: {
     default: Date.now,
   },
 });
-
 
 module.exports = mongoose.model("item", clothingItemSchema);

@@ -1,17 +1,18 @@
 const ClothingItem = require("../models/clothingItem");
 
-const getClothingItems = (req, res) => ClothingItem.find({})
-  .then((items) => res.status(200).send({ data: items }))
-  .catch((err) => {
-    console.error(err);
-    res.status(500).send({ message: err.message });
-  });
+const getClothingItems = (req, res) =>
+  ClothingItem.find({})
+    .then((items) => res.status(200).send({ data: items }))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send({ message: err.message });
+    });
 
 const createClothingItem = (req, res) => {
   if (!req.user) {
     return res.status(401).send({ message: "Unauthorized" });
   }
-  const owner = req.user._id; 
+  const owner = req.user._id;
   const { name, weather, imageUrl } = req.body;
   return ClothingItem.create({ name, weather, imageUrl, owner })
     .then((item) => res.status(201).send({ data: item }))
@@ -99,7 +100,7 @@ const dislikeClothingItem = (req, res) => {
     return res.status(401).send({ message: "Unauthorized" });
   }
   const { itemId } = req.params;
-  const userId = req.user._id; 
+  const userId = req.user._id;
   return ClothingItem.findByIdAndUpdate(
     itemId,
     { $pull: { likes: userId } },
