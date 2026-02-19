@@ -2,7 +2,7 @@ const ClothingItem = require("../models/clothingItem");
 
 const getClothingItems = (req, res) =>
   ClothingItem.find({})
-    .then((items) => res.status(200).send({ data: items }))
+    .then((items) => res.status(200).send(items))
     .catch((err) => {
       console.error(err);
       res.status(500).send({ message: err.message });
@@ -15,7 +15,7 @@ const createClothingItem = (req, res) => {
   const owner = req.user._id;
   const { name, weather, imageUrl } = req.body;
   return ClothingItem.create({ name, weather, imageUrl, owner })
-    .then((item) => res.status(201).send({ data: item }))
+    .then((item) => res.status(201).send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -37,7 +37,7 @@ const updateClothingItem = (req, res) => {
     }
   )
     .orFail()
-    .then((item) => res.status(200).send({ data: item }))
+    .then((item) => res.status(200).send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
@@ -107,7 +107,7 @@ const dislikeClothingItem = (req, res) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(200).send({ data: item }))
+    .then((item) => res.status(200).send(item))
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
