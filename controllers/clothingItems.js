@@ -1,16 +1,23 @@
 const ClothingItem = require("../models/clothingItem");
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  UNAUTHORIZED,
+  FORBIDDEN,
+  SERVER_ERROR,
+} = require("../utils/errors");
 
 const getClothingItems = (req, res) =>
   ClothingItem.find({})
     .then((items) => res.status(200).send(items))
     .catch((err) => {
       console.error(err);
-      res.status(500).send({ message: err.message });
+      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server." });
     });
 
 const createClothingItem = (req, res) => {
   if (!req.user) {
-    return res.status(401).send({ message: "Unauthorized" });
+    return res.status(UNAUTHORIZED).send({ message: "Unauthorized" });
   }
   const owner = req.user._id;
   const { name, weather, imageUrl } = req.body;
@@ -19,9 +26,9 @@ const createClothingItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: err.message });
       }
-      return res.status(500).send({ message: err.message });
+      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server." });
     });
 };
 
@@ -41,38 +48,48 @@ const updateClothingItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "ValidationError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: err.message });
       }
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res.status(NOT_FOUND).send({ message: "Clothing item not found" });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      return res.status(500).send({ message: err.message });
+      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server." });
     });
 };
 
 const deleteClothingItem = (req, res) => {
   const { itemId } = req.params;
-  return ClothingItem.findByIdAndDelete(itemId)
+  const currentUserId = req.user?._id;
+
+  return ClothingItem.findById(itemId)
     .orFail()
-    .then(() => res.status(200).send({ message: "Item deleted successfully!" }))
+    .then((item) => {
+      const isOwner = currentUserId && item.owner.equals(currentUserId);
+      if (!isOwner) {
+        return res.status(FORBIDDEN).send({ message: "You may only delete items you have added." });
+      }
+      return ClothingItem.findByIdAndDelete(itemId).then(() =>
+        res.status(200).send({ message: "Item deleted successfully!" })
+      );
+    })
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res.status(NOT_FOUND).send({ message: "Clothing item not found" });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      return res.status(500).send({ message: err.message });
+      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server." });
     });
 };
 
 const likeClothingItem = (req, res) => {
   if (!req.user) {
-    return res.status(401).send({ message: "Unauthorized" });
+    return res.status(UNAUTHORIZED).send({ message: "Unauthorized" });
   }
   const { itemId } = req.params;
   const userId = req.user._id;
@@ -86,18 +103,18 @@ const likeClothingItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res.status(NOT_FOUND).send({ message: "Clothing item not found" });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      return res.status(500).send({ message: err.message });
+      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server." });
     });
 };
 
 const dislikeClothingItem = (req, res) => {
   if (!req.user) {
-    return res.status(401).send({ message: "Unauthorized" });
+    return res.status(UNAUTHORIZED).send({ message: "Unauthorized" });
   }
   const { itemId } = req.params;
   const userId = req.user._id;
@@ -111,12 +128,12 @@ const dislikeClothingItem = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err.name === "DocumentNotFoundError") {
-        return res.status(404).send({ message: err.message });
+        return res.status(NOT_FOUND).send({ message: "Clothing item not found" });
       }
       if (err.name === "CastError") {
-        return res.status(400).send({ message: err.message });
+        return res.status(BAD_REQUEST).send({ message: "Invalid item ID" });
       }
-      return res.status(500).send({ message: err.message });
+      return res.status(SERVER_ERROR).send({ message: "An error has occurred on the server." });
     });
 };
 module.exports = {
