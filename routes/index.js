@@ -8,7 +8,7 @@ const {
   validateLoginBody,
 } = require("../middlewares/validation");
 const userRouter = require("./users");
-const clothingItemsRouter = require("./clothingitems");
+const clothingItemsRouter = require("./clothingItems");
 
 router.use((req, res, next) => {
   const isSignin = req.method === "POST" && req.path === "/signin";
