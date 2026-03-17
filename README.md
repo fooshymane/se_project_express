@@ -7,3 +7,13 @@ The back-end project is focused on creating a server for the WTWR application. Y
 
 ### Testing
 Before committing your code, make sure you edit the file `sprint.txt` in the root folder. The file `sprint.txt` should contain the number of the sprint you're currently working on. For ex. 12
+
+
+## About Video
+
+ video overview of the project
+ - [Video Link](https://www.loom.com/share/9f85f8ceac4a4412abaf5133fcc28e10)
+
+  
+### FRONT END REPO
+[FRONT END CODE CAN BE FOUND AT] (https://github.com/fooshymane/se_project_react)
