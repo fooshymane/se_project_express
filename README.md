@@ -15,5 +15,15 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
  - [Video Link](https://www.loom.com/share/9f85f8ceac4a4412abaf5133fcc28e10)
 
   
-### FRONT END REPO
+### FRONTEND REPO
 [FRONT END CODE CAN BE FOUND AT] (https://github.com/fooshymane/se_project_react)
+
+
+#### BACKEND DOMAIN
+https://api.wtwrharfoush.jumpingcrab.com
+
+
+##### FRONTEND DOMAIN
+https://wtwrharfoush.jumpingcrab.com
+https://www.wtwrharfoush.jumpingcrab.com
+
