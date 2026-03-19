@@ -12,7 +12,7 @@ Before committing your code, make sure you edit the file `sprint.txt` in the roo
 ## About Video
 
  video overview of the project
- - [Video Link](https://www.loom.com/share/9f85f8ceac4a4412abaf5133fcc28e10)
+ - [Video Link](https://www.loom.com/share/ae61ca6156874a6bb6787a5388b2a2b8)
 
   
 ### FRONTEND REPO
