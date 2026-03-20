@@ -92,7 +92,7 @@ const likeClothingItem = (req, res, next) => {
     { new: true }
   )
     .orFail()
-    .then((item) => res.status(200).send({ data: item }))
+    .then((item) => res.status(200).send(item))
     .catch((err) => {
       if (err.name === "DocumentNotFoundError") {
         return next(new NotFoundError("Clothing item not found"));
